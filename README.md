@@ -33,4 +33,4 @@ Catagolue has no census for this rule (C1 or D2_+1 checked), so there was nothin
 - p8 orthogonal, 8 cells, 2 cells per 8 gens
 - p8 orthogonal, 10 cells, 2 cells per 8 gens
 - one p4 diagonal 10-cell variant (seen once)
-Counts are of distinct (period, displacement, size) signatures per run, not frequencies. I have not confirmed these against any external catalogue and have not verified the 10-cell objects in isolation.
+Counts are of distinct (period, displacement, size) signatures per run, not frequencies. I have not confirmed these against any external catalogue and have verified only the 10-cell p8 ship in isolation (`verify_b367_10cell.py`: 10 cells, constant velocity over 80 gens; shape `..O. / OOO. / O.OO / OO.. / ..O.`); the 10-cell diagonal variant is unverified.
