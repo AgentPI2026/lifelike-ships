@@ -1,0 +1,30 @@
+<!doctype html><meta charset=utf-8><title>Life-like zoo</title>
+<style>body{font:14px sans-serif;margin:16px;background:#111;color:#ddd}canvas{background:#000;image-rendering:pixelated;border:1px solid #444;width:640px;height:640px}
+button,select{margin:2px;padding:4px 8px}</style>
+<h3>Life-like rule zoo (spaceships found by random-soup search)</h3>
+<select id=r></select> <button id=ship>place ship</button> <button id=soup>random soup</button> <button id=clr>clear</button>
+<button id=pp>pause</button> speed <input id=sp type=range min=1 max=30 value=8> <span id=info></span><br>
+<canvas id=c width=128 height=128></canvas>
+<script>
+const N=128,rules={
+"Conway B3/S23":{B:[3],S:[2,3],ship:["OO.","O.O","O.."]},
+"B3568/S247 (c/7 ship)":{B:[3,5,6,8],S:[2,4,7],ship:["O.O.","..O.","OOOO","..O.","O.O."]},
+"B38/S024578 (c/7 diagonal)":{B:[3,8],S:[0,2,4,5,7,8],ship:[".O..","OO..","OOOO",".OO."]},
+"B367/S237 (c/4, p8)":{B:[3,6,7],S:[2,3,7],ship:[".O.O","O..O",".OOO","..O."]},
+"Day&Night B3678/S34678 (soup only)":{B:[3,6,7,8],S:[3,4,6,7,8],ship:null}};
+const sel=document.getElementById('r');for(const k in rules)sel.add(new Option(k,k));
+let g=new Uint8Array(N*N),h=new Uint8Array(N*N),gen=0,run=true;
+const cx=document.getElementById('c').getContext('2d'),img=cx.createImageData(N,N);
+function step(){const R=rules[sel.value],B=new Uint8Array(9),S=new Uint8Array(9);R.B.forEach(i=>B[i]=1);R.S.forEach(i=>S[i]=1);
+ for(let y=0;y<N;y++)for(let x=0;x<N;x++){let n=0;for(let dy=-1;dy<2;dy++)for(let dx=-1;dx<2;dx++)if(dx||dy)n+=g[((y+dy+N)%N)*N+(x+dx+N)%N];
+  h[y*N+x]=g[y*N+x]?S[n]:B[n];}[g,h]=[h,g];gen++}
+function draw(){let pop=0;for(let i=0;i<N*N;i++){const v=g[i];pop+=v;const o=i*4;img.data[o]=v?120:0;img.data[o+1]=v?255:0;img.data[o+2]=v?160:0;img.data[o+3]=255}
+ cx.putImageData(img,0,0);document.getElementById('info').textContent=` gen ${gen}  pop ${pop}`}
+function put(p,ox,oy){p.forEach((row,y)=>[...row].forEach((c,x)=>{if(c=='O')g[((oy+y)%N)*N+(ox+x)%N]=1}))}
+ship.onclick=()=>{const p=rules[sel.value].ship;if(p)put(p,N/2-2,N/2-2);else soup.onclick()};
+soup.onclick=()=>{g.fill(0);for(let y=40;y<88;y++)for(let x=40;x<88;x++)g[y*N+x]=Math.random()<.35;gen=0};
+clr.onclick=()=>{g.fill(0);gen=0};pp.onclick=()=>{run=!run;pp.textContent=run?'pause':'run'};
+sel.onchange=()=>{g.fill(0);gen=0;ship.onclick()};
+c.onclick=e=>{const r=c.getBoundingClientRect();const x=Math.floor((e.clientX-r.left)/r.width*N),y=Math.floor((e.clientY-r.top)/r.height*N);g[y*N+x]^=1;draw()};
+sel.onchange();let last=0;(function loop(t){if(run&&t-last>1000/(+sp.value*2)){step();last=t}draw();requestAnimationFrame(loop)})(0);
+</script>
