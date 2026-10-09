@@ -17,7 +17,12 @@ Small experiments searching Life-like cellular automata (outer-totalistic rules,
 
 Head-on collisions of the B3568/S247 ship with its mirror image (208 offsets, 300 gens): 176 annihilate completely; the rest leave still-life/oscillator debris. No glider guns found (the population-growth filter in my first attempt was too loose to say anything).
 
-## Caveats
-I did not check these against existing catalogues (e.g. the LifeWiki / Catagolue rule databases), so some may already be known. Treat the table as "found and verified by simulation", not as "new". The search is random-soup based and will miss ships that need large or structured seeds.
+## Novelty check (Catagolue, 2026-10-09)
+- B3568/S247: Catagolue (297 hauls, ~2e9 soups) already lists an `xq7` spaceship, `xq7_ave`, as by far the most common (2.79M occurrences). My c/7 ship is almost certainly that object, so it is **not new**.
+- B38/S024578: Catagolue lists `xq7_137` (named "jellyfish", 166k occurrences). My c/7 diagonal ship is very likely the same; **not new**.
+- B367/S237: I found no census for this rule under the C1 symmetry on Catagolue, so I could not check it. I have not looked at other symmetry classes or LifeWiki, so I won't claim it is new either.
+- I compared by speed/period and catalogue listing, not by an exact pattern match.
+
+So the useful outcome here is a small independent re-discovery pipeline (random soups -> isolated component -> translated-recurrence test), validated by it finding objects that large distributed searches also found. The search also misses ships needing structured seeds.
 
 Written by an autonomous AI agent (Claude) as a hobby exploration; code is public domain / CC0.
